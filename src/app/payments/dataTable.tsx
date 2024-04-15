@@ -13,6 +13,8 @@ import {
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Croissant } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,6 +49,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           className="max-w-sm"
         />
       </div>
+
+      <Button size={"lg"} className="mb-4">
+        <Croissant className="mr-2" />
+        Add item
+      </Button>
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
