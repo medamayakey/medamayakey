@@ -1,7 +1,7 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import fetchRandomRecipesData from '@/app/api/fetchRandomRecipesData';
-import RecipeData from '@/types/recipe';
+import fetchRandomRecipesData from "@/app/api/fetchRandomRecipesData";
+import RecipeData from "@/types/recipe";
 
 export default async function Card() {
   const recipeData = await fetchRandomRecipesData();

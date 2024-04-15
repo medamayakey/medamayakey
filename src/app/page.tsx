@@ -1,29 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
+import HomeImage from "../../public/home.webp";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
-    <main className="p-2">
-      <Link href="/testpage">shadcn/ui and Aceternity test</Link>
-
-      <div className="mb-2">
-        <Button>Button</Button>
-      </div>
-      <div className="mb-2">
-        <Button variant="destructive">destructive</Button>
-      </div>
-      <div className="mb-2">
-        <Button variant="outline">outline</Button>
-      </div>
-      <div className="mb-2">
-        <Button variant="secondary">secondary</Button>
-      </div>
-      <div className="mb-2">
-        <Button variant="defaultOutline" size="sm">
-          Button
-        </Button>
-      </div>
-    </main>
+    <>
+      <Header />
+      <main className="container p-2">
+        <Image src={HomeImage} alt="Fridgefy HomeImage" />
+      </main>
+    </>
   );
 }
