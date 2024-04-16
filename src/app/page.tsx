@@ -1,8 +1,8 @@
-import Image from "next/image";
-import HomeImage from "../../public/home.webp";
-import Header from "@/components/Header";
+import Image from 'next/image';
+import HomeImage from '../../public/home.webp';
+import Header from '@/components/Header';
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Header />

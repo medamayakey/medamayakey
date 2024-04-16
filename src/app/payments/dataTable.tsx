@@ -21,7 +21,9 @@ import {
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Croissant } from 'lucide-react';
+import { Croissant, X } from 'lucide-react';
+
+import { addFridgeItems, deleteFridgeItems } from '@/db/firebase/firestore';
 
 import Item from '@/types/item';
 
@@ -51,6 +53,30 @@ export function DataTable<Item, TValue>({
       columnFilters,
     },
   });
+
+  // console.log('data', data);
+
+  const getRandomNumber = () => {
+    const min = 1;
+    const max = 10;
+    const decimal = 100;
+    return Math.ceil((Math.random() * (max - min) + min) * decimal) / decimal;
+  };
+
+  const handleAddClick = async () => {
+    const inputValue = table.getColumn('name')?.getFilterValue() as string;
+    const newItem = {
+      name: inputValue,
+      quantity: 1,
+      price: getRandomNumber(),
+    };
+    await addFridgeItems(newItem);
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    await deleteFridgeItems(id);
+  };
+
   return (
     <>
       <div className="flex items-center py-4">
@@ -64,7 +90,7 @@ export function DataTable<Item, TValue>({
         />
       </div>
 
-      <Button size={'lg'} className="mb-4">
+      <Button size={'lg'} className="mb-4" onClick={handleAddClick}>
         <Croissant className="mr-2" />
         Add item
       </Button>
@@ -96,8 +122,17 @@ export function DataTable<Item, TValue>({
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className="flex justify-between"
+                    id={cell.row.original.id}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <button
+                      onClick={() => handleDeleteClick(cell.row.original.id)}
+                    >
+                      <X />
+                    </button>
                   </TableCell>
                 ))}
               </TableRow>
