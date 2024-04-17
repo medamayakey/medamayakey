@@ -8,7 +8,6 @@ async function getData() {
 
 export default async function Sidebar() {
   const data = await getData();
-  console.log(data);
 
   return (
     <aside className="min-w-72 bg-slate-50 p-6">
