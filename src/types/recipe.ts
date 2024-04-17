@@ -4,7 +4,7 @@ interface Measure {
   unitLong: string;
 }
 
-interface Ingredient {
+export interface Ingredient {
   id: number;
   name: string;
   localizedName: string;

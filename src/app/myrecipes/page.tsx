@@ -1,15 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Cartbar from "@/components/Cartbar";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import fetchRandomRecipesData from "@/app/api/fetchRandomRecipesData";
-import RecipeData from "@/types/recipe";
-import { Trash2 } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import Header from '@/components/Header';
+import Sidebar from '@/components/Sidebar';
+import Cartbar from '@/components/Cartbar';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import fetchRandomRecipesData from '@/app/api/fetchRandomRecipesData';
+import RecipeData from '@/types/recipe';
+import { Trash2 } from 'lucide-react';
+import CartRecipes from '@/app/myrecipes/CartRecipes';
 
-export default async function Myrecipes() {
-  const recipeData = await fetchRandomRecipesData();
+export default function Myrecipes() {
+  // const recipeData = await fetchRandomRecipesData();
 
   return (
     <>
@@ -17,13 +23,19 @@ export default async function Myrecipes() {
       <div className="flex">
         <Sidebar />
         <main className="p-9">
-          <Accordion type="single" collapsible>
+          {/* <Accordion type="single" collapsible>
             {recipeData.map((recipe: RecipeData) => (
               <AccordionItem value={recipe.id} key={recipe.id}>
                 <AccordionTrigger>
                   <div className="flex items-center justify-between w-full gap-4">
                     <Link href="" className="min-w-16">
-                      <Image src={recipe.image} alt={recipe.title} width={64} height={64} className="rounded-md" />
+                      <Image
+                        src={recipe.image}
+                        alt={recipe.title}
+                        width={64}
+                        height={64}
+                        className="rounded-md"
+                      />
                     </Link>
                     <h2 className="flex-1 text-left">{recipe.title}</h2>
                     <div className="absolute z-50 left-2">
@@ -37,7 +49,8 @@ export default async function Myrecipes() {
                 </AccordionContent>
               </AccordionItem>
             ))}
-          </Accordion>
+          </Accordion> */}
+          <CartRecipes />
         </main>
         <Cartbar />
       </div>
