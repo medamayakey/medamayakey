@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Papa from 'papaparse';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -26,6 +27,8 @@ import { Croissant, X } from 'lucide-react';
 import { addFridgeItems, deleteFridgeItems } from '@/db/firebase/firestore';
 
 import Item from '@/types/item';
+
+const CSV_URL = 'https://spoonacular.com/application/frontend/downloads/top-1k-ingredients.csv';
 
 interface DataTableProps<Item, TValue> {
   columns: ColumnDef<Item, TValue>[];
@@ -54,8 +57,6 @@ export function DataTable<Item, TValue>({
     },
   });
 
-  // console.log('data', data);
-
   const getRandomNumber = () => {
     const min = 1;
     const max = 10;
@@ -77,17 +78,74 @@ export function DataTable<Item, TValue>({
     await deleteFridgeItems(id);
   };
 
+  // fetch CSV data from spoonacular Ingredients API
+  const [inputData, setInputData] = useState([]);
+  // search item state
+  const [searchItem, setSearchItem] = useState("");
+  // filtered data state
+  const [filteredData, setFilteredData] = useState([]);
+
+  // const [selectedItem, setSelectedItem] = useState('');
+
+  interface ConvertedData {
+    id: string;
+    name: string;
+  }
+
+  const convertCSVData = (data: Array<Array<string>>): Array<ConvertedData> => {
+    return data.map(row => ({
+      id: row[1],
+      name: row[0]
+    }));
+  };
+  // fetch CSV data from spoonacular Ingredients API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(CSV_URL);
+        const csvData = await response.text();
+        const parsedData = Papa.parse(csvData, {
+          header: false,
+        });
+        setInputData(parsedData.data as never[]);
+        console.log("parsedData", parsedData.data);
+      } catch (error) {
+        console.error('Error parsing CSV:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const filteredData = (inputData as never[]).filter((item) =>
+      (item[0] as string).toLowerCase().includes(searchItem)
+    );
+    setFilteredData(filteredData);
+  }, [inputData, searchItem]);
+
+  const handleChange = (event:any) => {
+    table.getColumn('name')?.setFilterValue(event.target.value);
+    setSearchItem(event.target.value);
+  }
+
   return (
     <>
       <div className="flex items-center py-4">
         <Input
           placeholder="Search item..."
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
+          onChange={handleChange}
           className="max-w-sm"
+          list="ingredients"
+          type='text'
         />
+        <datalist id="ingredients">
+          {filteredData.map((item, index) => (
+            <option key={index} value={item[0]} />
+          ))}
+        </datalist>
+
       </div>
 
       <Button size={'lg'} className="mb-4" onClick={handleAddClick}>
