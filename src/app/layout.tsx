@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Comfortaa } from "next/font/google";
 import "./globals.css";
 
-const comfortaa = Comfortaa({ weight: ['400', '500'], subsets: ["latin"] });
+const comfortaa = Comfortaa({ weight: ["400", "500"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,12 +12,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
+  modal: ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={comfortaa.className}>{children}</body>
+      <body className={comfortaa.className}>
+        {children}
+        {modal}
+      </body>
     </html>
   );
 }
