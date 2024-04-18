@@ -1,5 +1,4 @@
-"use client";
-import RecipesFilterList from "./RecipesFilterList";
+import RecipesFilterList from "./RecipesFilterSheet";
 
 export default function RecipesFilter() {
   return (

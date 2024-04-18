@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Filter, Search } from "lucide-react";
 import { SheetTrigger } from "@/components/ui/sheet";
 import { RecipesContext } from "@/contexts/recipeContext";
-import { fetchRecipesData } from "../api/fetchRandomRecipesData";
+import { fetchRecipesData } from "../../api/fetchRandomRecipesData";
 
 export default function RecipesFilterInput() {
   const [query, setQuery] = useState("");
@@ -30,7 +30,6 @@ export default function RecipesFilterInput() {
           className="pl-10 w-80"
           type="text"
         />
-        <button onClick={getRecipe}>search</button>
         <SheetTrigger asChild>
           <Button variant="outline">
             <Filter className="mr-2" />

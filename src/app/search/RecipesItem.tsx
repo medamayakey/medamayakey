@@ -1,17 +1,20 @@
-"use client";
+// "use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RecipeDetails } from "@/contexts/recipeContext";
+import { useEffect, useState } from "react";
+import { fetchRecipesData } from "../api/fetchRandomRecipesData";
+import RecipeData from "@/types/recipe";
 
 interface RecipesItemProps {
   recipeItem: RecipeDetails;
 }
 
 export default function RecipesItem({ recipeItem }: RecipesItemProps) {
-  if (!recipeItem) {
-    return <div>Loading...</div>;
-  }
+  // const response = await fetchRecipesData();
+  // const recipeData = (await response.json()) as RecipeData;
+
   return (
     <>
       <li className="relative grid grid-cols-3 gap-4">

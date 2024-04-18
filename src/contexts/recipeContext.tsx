@@ -1,5 +1,6 @@
 "use client";
-import { createContext, useState, ReactNode, Dispatch, SetStateAction, useMemo } from "react";
+import { fetchRecipesData } from "@/app/api/fetchRandomRecipesData";
+import { createContext, useState, ReactNode, Dispatch, SetStateAction, useMemo, useEffect } from "react";
 
 interface Props {
   children: ReactNode;
@@ -26,6 +27,7 @@ export const RecipesContext = createContext<RecipesContextState>({
 
 export const RecipeResultProvider = ({ children }: Props) => {
   const [recipesData, setRecipesData] = useState<RecipeDetails[]>([]);
+
   const recipeContextValue = useMemo(
     () => ({
       recipesData,

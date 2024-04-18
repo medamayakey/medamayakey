@@ -120,12 +120,11 @@ export function DataTable<Item, TValue>({ columns, data }: DataTableProps<Item, 
 
   return (
     <>
-      <div className="flex items-center py-4">
+      <div className="py-4">
         <Input
           placeholder="Search item..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={handleChange}
-          className="max-w-sm"
           list="ingredients"
           type="text"
         />

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle"
 import { useState, useContext, createContext } from "react";
 import { diets, intolerances, cuisines } from "@/types/options";
-import RecipesFilterInput from "./RecipesFilterInput";
+import RecipesFilterInput from "./RecipesFilterBox";
 import fetchFilteredRecipesData from "@/app/api/fetchFilteredRecipesData";
 
 import {

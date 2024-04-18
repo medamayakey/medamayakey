@@ -1,7 +1,6 @@
-import { useFilterContext } from "../search/RecipesFilterList";
+import { useFilterContext } from "../search/(filter)/RecipesFilterSheet";
 
 export default async function fetchFilteredRecipesData(cuisine: string[], intolerance: string[], diet: string[]) {
-
   const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.SPOONACULAR_API_KEY}&cuisine=${cuisine}&intolerances=${intolerance}&diet=${diet}`;
 
   console.log(url);
@@ -16,4 +15,3 @@ export default async function fetchFilteredRecipesData(cuisine: string[], intole
   //   })
   //   .then((data) => data.results);
 }
-

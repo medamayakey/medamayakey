@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Comfortaa } from "next/font/google";
-import "./globals.css";
-
 import { ClerkProvider } from "@clerk/nextjs";
+import Header from "@/components/Header";
+
+import "./globals.css";
 
 const comfortaa = Comfortaa({ weight: ["400", "500"], subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={comfortaa.className}>
+          <Header />
           {children}
           {modal}
           <div id="modal-root" />
