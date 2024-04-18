@@ -10,29 +10,27 @@ import { Trash2 } from "lucide-react";
 export default function CartRecipes() {
   const [recipes, setRecipes] = useState([]);
 
-  console.log(recipes);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await getRecipes();
+  //       setRecipes(data);
+  //     } catch (error) {
+  //       console.error("Error fetching recipes:", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getRecipes();
-        setRecipes(data);
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    };
+  //   fetchData();
+  // }, []);
 
-    fetchData();
-  }, []);
-
-  const handleDeleteRecipe = async (id) => {
-    try {
-      await deleteRecipe(id);
-      setRecipes(recipes.filter((recipe) => recipe.id !== id));
-    } catch (error) {
-      console.error("Error deleting recipe:", error);
-    }
-  };
+  // const handleDeleteRecipe = async (id) => {
+  //   try {
+  //     await deleteRecipe(id);
+  //     setRecipes(recipes.filter((recipe) => recipe.id !== id));
+  //   } catch (error) {
+  //     console.error("Error deleting recipe:", error);
+  //   }
+  // };
 
   return (
     <>

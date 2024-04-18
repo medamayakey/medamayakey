@@ -1,11 +1,9 @@
 "use client";
-import { fetchRecipeDetail } from "@/app/api/fetchRecipeDetail";
-
-import { RecipeDetails } from "@/app/search/recipeDetails";
-import RecipeData from "@/types/recipe";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent } from "../../../../components/ui/dialog";
+import { fetchRecipeDetail } from "@/app/api/fetchRandomRecipesData";
+import RecipeData from "@/types/recipe";
+import RecipeDetail from "@/app/search/RecipeDetail";
+import { Modal } from "./modal";
 
 interface RecipeDetailModalProps {
   params: {
@@ -13,46 +11,24 @@ interface RecipeDetailModalProps {
   };
 }
 
-export const RecipeDetailModalPage = async ({ params }: RecipeDetailModalProps) => {
-  const response = await fetchRecipeDetail(params.id);
-  const recipeData = (await response.json()) as RecipeData;
-  const router = useRouter();
-  // export const RecipeDetailModalPage = ({ params }: RecipeDetailModalProps) => {
-  //   const [recipeData, setRecipeData] = useState<RecipeData | null>();
-  //   const router = useRouter();
+export default function RecipeDetailModal({ params }: RecipeDetailModalProps) {
+  const [recipeDetail, setRecipeDetail] = useState<RecipeData>();
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const response = await fetchRecipeDetail(params.id);
-  //       const recipeData = (await response.json()) as RecipeData;
-  //       setRecipeData(recipeData);
-  //     };
-
-  //     fetchData();
-  //   }, [params.id]);
-
-  const handleOnOpenChange = (open: boolean) => {
-    if (!open) {
-      router.back();
-    }
-  };
-
-  //   if (!recipeData) {
-  //     return <div>Loading...</div>;
-  //   }
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const response = await fetchRecipeDetail(params.id);
+        setRecipeDetail(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchApi();
+  }, [params.id]);
 
   return (
-    <Dialog onOpenChange={handleOnOpenChange}>
-      <DialogContent>
-        <RecipeDetails
-          id={recipeData.id}
-          title={recipeData.title}
-          readyInMinutes={recipeData.readyInMinutes}
-          image={recipeData.image}
-          summary={recipeData.summary}
-          instructions={recipeData.instructions}
-        />
-      </DialogContent>
-    </Dialog>
+    <Modal>
+      <RecipeDetail recipeDetail={recipeDetail} />
+    </Modal>
   );
-};
+}
