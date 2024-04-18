@@ -1,8 +1,8 @@
 "use client";
-import { fetchRecipeDetail } from "@/app/api/fetchRecipeDetail";
-import { RecipeDetails } from "@/app/search/recipeDetails";
-import RecipeData from "@/types/recipe";
 import { useEffect, useState } from "react";
+import { fetchRecipeDetail } from "@/app/api/fetchRandomRecipesData";
+import RecipeData from "@/types/recipe";
+import RecipeDetail from "@/app/search/RecipeDetail";
 
 interface RecipeDetailPageProps {
   params: {
@@ -10,38 +10,20 @@ interface RecipeDetailPageProps {
   };
 }
 
-export const RecipeDetailPage = async ({ params }: RecipeDetailPageProps) => {
-  const response = await fetchRecipeDetail(params.id);
-  const recipeData = (await response.json()) as RecipeData;
-  // export const RecipeDetailPage = ({ params }: RecipeDetailPageProps) => {
-  //   const [recipeData, setRecipeData] = useState<RecipeData | null>();
+export default function RecipeDetailPage({ params }: RecipeDetailPageProps) {
+  const [recipeDetail, setRecipeDetail] = useState<RecipeData>();
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const response = await fetchRecipeDetail(params.id);
-  //       const data = (await response.json()) as RecipeData;
-  //       setRecipeData(data);
-  //     };
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const response = await fetchRecipeDetail(params.id);
+        setRecipeDetail(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchApi();
+  }, [params.id]);
 
-  //     fetchData();
-  //   }, [params.id]);
-
-  //   if (!recipeData) {
-  //     return <div>Loading...</div>;
-  //   }
-
-  return (
-    <main>
-      <div className="rounded-md w-full bg-white shadow-md">
-        <RecipeDetails
-          id={recipeData.id}
-          title={recipeData.title}
-          readyInMinutes={recipeData.readyInMinutes}
-          image={recipeData.image}
-          summary={recipeData.summary}
-          instructions={recipeData.instructions}
-        />
-      </div>
-    </main>
-  );
-};
+  return <RecipeDetail recipeDetail={recipeDetail} />;
+}

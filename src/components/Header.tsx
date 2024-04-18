@@ -1,8 +1,9 @@
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "../../public/logo.svg";
-import { Button } from "./ui/button";
-import { LogOut, NotebookPen, Search, SmilePlus } from "lucide-react";
+import { SignInButton, SignedOut, UserButton, SignedIn } from '@clerk/nextjs';
+import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '../../public/logo.svg';
+import { Button } from './ui/button';
+import { LogOut, NotebookPen, Search, SmilePlus } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -31,24 +32,25 @@ export default function Header() {
                 <span>Search</span>
               </Link>
             </li>
-            <li>
-              <Link href="/myrecipes">
-                <span className="mr-2">
-                  <NotebookPen />
-                </span>
-                <span>My Recipes</span>
-              </Link>
-            </li>
-            <li>
-              <Button variant="outline">Sign up with Google</Button>
-            </li>
+            <SignedIn>
+              <li>
+                <Link href="/myrecipes">
+                  <span className="mr-2">
+                    <NotebookPen />
+                  </span>
+                  <span>My Recipes</span>
+                </Link>
+              </li>
+            </SignedIn>
+            <SignedOut>
+              <li>
+                <SignInButton redirectUrl="/" mode="modal">
+                  <Button variant="outline">Sign In</Button>
+                </SignInButton>
+              </li>
+            </SignedOut>
             <li className="ml-16">
-              <Link href="/">
-                <span className="mr-2">
-                  <LogOut />
-                </span>
-                <span>Log out</span>
-              </Link>
+              <UserButton afterSignOutUrl="/" />
             </li>
           </ul>
         </nav>

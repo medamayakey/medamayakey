@@ -44,7 +44,6 @@ interface Equipment {
 }
 
 export default interface RecipeData {
-  filter(arg0: (recipe: RecipeData) => boolean): unknown;
   vegetarian: boolean;
   vegan: boolean;
   glutenFree: boolean;
