@@ -1,36 +1,41 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useEffect, useState } from "react";
-import { getRecipes, deleteRecipe } from "@/db/firebase/firestore";
-import NewRrcipeData from "@/types/newRrcipeData";
-import { Trash2 } from "lucide-react";
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { useEffect, useState } from 'react';
+import { getRecipes, deleteRecipe } from '@/actions/db/firebase/firestore';
+import NewRrcipeData from '@/types/newRrcipeData';
+import { Trash2 } from 'lucide-react';
 
 export default function CartRecipes() {
   const [recipes, setRecipes] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await getRecipes();
-  //       setRecipes(data);
-  //     } catch (error) {
-  //       console.error("Error fetching recipes:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getRecipes();
+        setRecipes(data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
-  // const handleDeleteRecipe = async (id) => {
-  //   try {
-  //     await deleteRecipe(id);
-  //     setRecipes(recipes.filter((recipe) => recipe.id !== id));
-  //   } catch (error) {
-  //     console.error("Error deleting recipe:", error);
-  //   }
-  // };
+  const handleDeleteRecipe = async (id) => {
+    try {
+      await deleteRecipe(id);
+      setRecipes(recipes.filter((recipe) => recipe.id !== id));
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+    }
+  };
 
   return (
     <>
@@ -41,10 +46,19 @@ export default function CartRecipes() {
               <AccordionTrigger>
                 <div className="flex items-center justify-between w-full gap-4">
                   <Link href="" className="min-w-16">
-                    <Image src={recipe.image} alt={recipe.title} width={64} height={64} className="rounded-md" />
+                    <Image
+                      src={recipe.image}
+                      alt={recipe.title}
+                      width={64}
+                      height={64}
+                      className="rounded-md"
+                    />
                   </Link>
                   <h2 className="flex-1 text-left">{recipe.title}</h2>
-                  <button className="absolute z-50 left-2" onClick={() => handleDeleteRecipe(recipe.id)}>
+                  <button
+                    className="absolute z-50 left-2"
+                    onClick={() => handleDeleteRecipe(recipe.id)}
+                  >
                     <Trash2 className="h-4 w-4 stroke-red-600 shrink-0 transition-transform duration-200" />
                   </button>
                 </div>

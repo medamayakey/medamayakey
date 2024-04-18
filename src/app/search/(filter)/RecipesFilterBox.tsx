@@ -1,14 +1,14 @@
-"use client";
-import { useContext, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
-import { SheetTrigger } from "@/components/ui/sheet";
-import { RecipesContext } from "@/contexts/recipeContext";
-import { fetchRecipesData } from "../api/fetchRandomRecipesData";
+'use client';
+import { useContext, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Filter, Search } from 'lucide-react';
+import { SheetTrigger } from '@/components/ui/sheet';
+import { RecipesContext } from '@/contexts/recipeContext';
+import { fetchRecipesData } from '../../../actions/api/fetchRandomRecipesData';
 
 export default function RecipesFilterInput() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const recipesData = useContext(RecipesContext);
 
   const getRecipe = async (e: { preventDefault: () => void }) => {
@@ -17,7 +17,7 @@ export default function RecipesFilterInput() {
       const response = await fetchRecipesData(query);
       recipesData?.setRecipesData(response.results);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -30,7 +30,6 @@ export default function RecipesFilterInput() {
           className="pl-10 w-80"
           type="text"
         />
-        <button onClick={getRecipe}>search</button>
         <SheetTrigger asChild>
           <Button variant="outline">
             <Filter className="mr-2" />

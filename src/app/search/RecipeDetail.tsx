@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Header from "@/components/Header";
 import { RecipeDetails } from "@/contexts/recipeContext";
 
 interface RecipeDetailProps {
@@ -13,7 +12,6 @@ export default function RecipeDetail({ recipeDetail }: RecipeDetailProps) {
   }
   return (
     <>
-      <Header />
       <main className="p-9">
         <div className="flex justify-center">
           <div className="relative gap-4">

@@ -1,14 +1,12 @@
 import { SignedIn } from "@clerk/nextjs";
-import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import RecipesFilter from "@/app/search/RecipesFilter";
+import RecipesFilter from "@/app/search/(filter)/RecipesFilter";
 import RecipesList from "./RecipesList";
 import { RecipeResultProvider } from "@/contexts/recipeContext";
 
 export default async function RecipesSearch() {
   return (
     <>
-      <Header />
       <div className="flex">
         <SignedIn>
           <Sidebar />

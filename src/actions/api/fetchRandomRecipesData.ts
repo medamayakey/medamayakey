@@ -1,8 +1,7 @@
-export async function fetchRecipesData(query: string) {
+export async function fetchRecipesData() {
   try {
     const response = await fetch(
-      // `https://api.spoonacular.com/recipes/complexSearch?query=${query}&includeIngredients=${ingredients}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-      `https://api.spoonacular.com/recipes/random?apiKey=${process.env.SPOONACULAR_API_KEY}&number=10`
+      `https://api.spoonacular.com/recipes/random?query=${query}?apiKey=${process.env.SPOONACULAR_API_KEY}&number=18`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch data");

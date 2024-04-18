@@ -1,10 +1,10 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle"
-import { useState, useContext, createContext } from "react";
-import { diets, intolerances, cuisines } from "@/types/options";
-import RecipesFilterInput from "./RecipesFilterInput";
-import fetchFilteredRecipesData from "@/app/api/fetchFilteredRecipesData";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Toggle } from '@/components/ui/toggle';
+import { useState, useContext, createContext } from 'react';
+import { diets, intolerances, cuisines } from '@/types/options';
+import RecipesFilterInput from './RecipesFilterBox';
+import fetchFilteredRecipesData from '@/actions/api/fetchFilteredRecipesData';
 
 import {
   Sheet,
@@ -14,8 +14,8 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
-import { join } from "path";
+} from '@/components/ui/sheet';
+import { join } from 'path';
 
 interface FilterContextType {
   selectedCuisine: string[];
@@ -39,13 +39,10 @@ export const FilterContext = createContext<FilterContextType>(initialContext);
 
 export const useFilterContext = () => useContext(FilterContext);
 
-
 export default function RecipesFilterList() {
-  
   const [selectedCuisine, setSelectedCuisine] = useState<string[]>([]);
   const [selectedIntolerance, setSelectedIntolerance] = useState<string[]>([]);
   const [selectedDiet, setSelectedDiet] = useState<string[]>([]);
-  
 
   // Toggle functions for each filter
   const toggleCuisine = (cuisine: string) => {
@@ -54,37 +51,42 @@ export default function RecipesFilterList() {
     } else {
       setSelectedCuisine([...selectedCuisine, cuisine]);
     }
-  }
+  };
   const toggleIntolerance = (intolerance: string) => {
     if (selectedIntolerance.includes(intolerance)) {
-      setSelectedIntolerance(selectedIntolerance.filter((i) => i !== intolerance));
+      setSelectedIntolerance(
+        selectedIntolerance.filter((i) => i !== intolerance)
+      );
     } else {
       setSelectedIntolerance([...selectedIntolerance, intolerance]);
     }
-  }
+  };
   const toggleDiet = (diet: string) => {
     if (selectedDiet.includes(diet)) {
       setSelectedDiet(selectedDiet.filter((d) => d !== diet));
     } else {
       setSelectedDiet([...selectedDiet, diet]);
     }
-  }
+  };
 
-  const replaceSpace = ( arr: string[] ) => {
+  const replaceSpace = (arr: string[]) => {
     return arr.map((item) => item.replace(/\s/g, '%20'));
-  }
-
+  };
 
   const deleteFilter = () => {
     setSelectedCuisine([]);
     setSelectedIntolerance([]);
     setSelectedDiet([]);
-  }
+  };
 
   const handleSaveButton = () => {
-    fetchFilteredRecipesData(replaceSpace(selectedCuisine), replaceSpace(selectedIntolerance), replaceSpace(selectedDiet));
+    fetchFilteredRecipesData(
+      replaceSpace(selectedCuisine),
+      replaceSpace(selectedIntolerance),
+      replaceSpace(selectedDiet)
+    );
     deleteFilter();
-  }
+  };
 
   return (
     // <FilterContext.Provider
@@ -107,7 +109,13 @@ export default function RecipesFilterList() {
               <div className="my-3">
                 <p className="text-base mb-2">Cuisines</p>
                 {cuisines.map((cuisine, index) => (
-                  <Toggle variant="outline" size="sm" key={index} className="m-1" onClick={() => toggleCuisine(cuisine) }>
+                  <Toggle
+                    variant="outline"
+                    size="sm"
+                    key={index}
+                    className="m-1"
+                    onClick={() => toggleCuisine(cuisine)}
+                  >
                     {cuisine}
                   </Toggle>
                 ))}
@@ -115,7 +123,13 @@ export default function RecipesFilterList() {
               <div className="my-3">
                 <p className="text-base mb-2">Intolerances</p>
                 {intolerances.map((intolerance, index) => (
-                  <Toggle variant="outline" size="sm" key={index} className="m-1" onClick={() => toggleIntolerance(intolerance)}>
+                  <Toggle
+                    variant="outline"
+                    size="sm"
+                    key={index}
+                    className="m-1"
+                    onClick={() => toggleIntolerance(intolerance)}
+                  >
                     {intolerance}
                   </Toggle>
                 ))}
@@ -123,7 +137,13 @@ export default function RecipesFilterList() {
               <div className="my-3">
                 <p className="text-base mb-2">Diets</p>
                 {diets.map((diet, index) => (
-                  <Toggle variant="outline" size="sm" key={index} className="m-1" onClick={() => toggleDiet(diet)}>
+                  <Toggle
+                    variant="outline"
+                    size="sm"
+                    key={index}
+                    className="m-1"
+                    onClick={() => toggleDiet(diet)}
+                  >
                     {diet}
                   </Toggle>
                 ))}
@@ -132,7 +152,13 @@ export default function RecipesFilterList() {
           </SheetHeader>
           <SheetFooter>
             <SheetClose asChild>
-              <Button type="submit" className="w-52" onClick={() => {handleSaveButton()}}>
+              <Button
+                type="submit"
+                className="w-52"
+                onClick={() => {
+                  handleSaveButton();
+                }}
+              >
                 Save
               </Button>
             </SheetClose>

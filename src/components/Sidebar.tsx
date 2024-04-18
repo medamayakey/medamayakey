@@ -1,6 +1,6 @@
-import { columns } from "@/app/payments/columns";
-import { DataTable } from "@/app/payments/dataTable";
-import { getFridgeItems } from "@/db/firebase/firestore";
+import { columns } from '@/components/fridgeItem/columns';
+import { DataTable } from '@/components/fridgeItem/dataTable';
+import { getFridgeItems } from '@/actions/db/firebase/firestore';
 
 async function getData() {
   return await getFridgeItems();
