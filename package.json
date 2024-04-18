@@ -11,8 +11,10 @@
   "dependencies": {
     "@clerk/nextjs": "^4.29.12",
     "@radix-ui/react-accordion": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@clerk/nextjs": "^4.29.12",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toggle": "^1.0.3",
     "@tanstack/react-table": "^8.16.0",
     "@types/papaparse": "^5.3.14",
     "class-variance-authority": "^0.7.0",

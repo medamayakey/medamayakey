@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import type { Metadata } from 'next';
 import { Comfortaa } from 'next/font/google';
 import './globals.css';
@@ -13,13 +14,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
+  modal: ReactNode;
 }>) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={comfortaa.className}>{children}</body>
+        <body className={comfortaa.className}>
+          {children}
+          {modal}
+        </body>
       </html>
     </ClerkProvider>
   );
