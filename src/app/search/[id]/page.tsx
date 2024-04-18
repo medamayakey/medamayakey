@@ -1,8 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import { fetchRecipeDetail } from "@/app/api/fetchRandomRecipesData";
-import RecipeData from "@/types/recipe";
-import RecipeDetail from "@/app/search/RecipeDetail";
+'use client';
+import { useEffect, useState } from 'react';
+import { fetchRecipeDetail } from '@/actions/api/fetchRandomRecipesData';
+import RecipeData from '@/types/recipe';
+import RecipeDetail from '@/app/search/RecipeDetail';
 
 interface RecipeDetailPageProps {
   params: {
@@ -19,7 +19,7 @@ export default function RecipeDetailPage({ params }: RecipeDetailPageProps) {
         const response = await fetchRecipeDetail(params.id);
         setRecipeDetail(response);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchApi();

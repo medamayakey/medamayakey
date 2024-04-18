@@ -1,8 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import { getFridgeItems } from "@/db/firebase/firestore";
-import { Item } from "firebase/analytics";
-import { Trash2 } from "lucide-react";
+'use client';
+import { useEffect, useState } from 'react';
+import { getFridgeItems } from '@/actions/db/firebase/firestore';
+import { Item } from 'firebase/analytics';
+import { Trash2 } from 'lucide-react';
 
 export default function Cartbar() {
   const [cartData, setCartData] = useState<Item[]>([]);
