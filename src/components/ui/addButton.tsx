@@ -1,12 +1,14 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { addRecipe } from '@/actions/db/firebase/firestore';
+
 import RecipeData from '@/types/recipe';
 
-interface RecipesItemButtonProps {
+import { addRecipe } from '@/actions/db/firebase/firestore';
+
+interface recipeProp {
   recipe: RecipeData;
 }
-export function RecipesItemButton({ recipe }: RecipesItemButtonProps) {
+
+export default function AddButton({ recipe }: recipeProp) {
   const handleClick = async () => {
     const addedRecipe = {
       id: recipe.id,
@@ -19,8 +21,8 @@ export function RecipesItemButton({ recipe }: RecipesItemButtonProps) {
   };
 
   return (
-    <Button className="w-full" size="sm" onClick={handleClick}>
+    <button className="btn btn-primary" onClick={handleClick}>
       Add
-    </Button>
+    </button>
   );
 }

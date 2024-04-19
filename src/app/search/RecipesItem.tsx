@@ -1,11 +1,11 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import RecipeData from "@/types/recipe";
-import { useCallback, useEffect, useState } from "react";
-import { fetchRecipesData } from "@/actions/api/fetchRandomRecipesData";
-import { RecipesItemButton } from "./RecipesItemButton";
-import { Button } from "@/components/ui/button";
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import RecipeData from '@/types/recipe';
+import { useCallback, useEffect, useState } from 'react';
+import { fetchRecipesData } from '@/actions/api/fetchRandomRecipesData';
+import { RecipesItemButton } from './RecipesItemButton';
+import { Button } from '@/components/ui/button';
 
 export default function RecipesItem() {
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
@@ -17,7 +17,6 @@ export default function RecipesItem() {
 
   useEffect(() => {
     recipesItems().then((items) => {
-      console.log("items", items);
       setRecipeData(items.recipes);
     });
   }, []);
@@ -27,7 +26,13 @@ export default function RecipesItem() {
       {recipeData.map((recipe: RecipeData) => (
         <div className="rounded-md w-full bg-white shadow-md" key={recipe.id}>
           <Link href={`/search/${recipe.id}`}>
-            <Image src={recipe.image} alt={recipe.title} width={640} height={100} className="rounded-t-md" />
+            <Image
+              src={recipe.image}
+              alt={recipe.title}
+              width={640}
+              height={100}
+              className="rounded-t-md"
+            />
           </Link>
 
           <div className="p-4">
