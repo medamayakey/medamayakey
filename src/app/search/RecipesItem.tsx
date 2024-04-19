@@ -3,24 +3,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import RecipeData from '@/types/recipe';
 import { useCallback, useEffect, useState } from 'react';
-import { fetchRecipesData } from '@/actions/api/fetchRandomRecipesData';
+import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
 import { RecipesItemButton } from './RecipesItemButton';
 import { Button } from '@/components/ui/button';
+import { useApp } from '@/contexts/AppContext';
+
 
 export default function RecipesItem() {
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
+  const { fetchedRecipesData, setFetchedRecipesData } = useApp();
 
   const recipesItems = useCallback(async () => {
     const items = await fetchRecipesData();
+    setFetchedRecipesData(items.recipes); // 取得したレシピデータを fetchedRecipesData に設定
+    setRecipeData(items.recipes); // レシピデータを recipeData に設定
+    console.log("fetchedRecipesData", fetchedRecipesData);
     return items;
   }, []);
 
   useEffect(() => {
-    recipesItems().then((items) => {
-      setRecipeData(items.recipes);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    recipesItems();
+    }, []);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3  gap-4">

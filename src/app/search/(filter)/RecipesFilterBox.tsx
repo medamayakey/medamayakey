@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Filter, Search } from 'lucide-react';
 import { SheetTrigger } from '@/components/ui/sheet';
 import { RecipesContext } from '@/contexts/recipeContext';
-import { fetchRecipesData } from '../../../actions/api/fetchRandomRecipesData';
+import { fetchRecipesData } from '../../../actions/api/fetchRecipesData';
 
 export default function RecipesFilterInput() {
   const [query, setQuery] = useState('');

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { fetchRecipeDetail } from '@/actions/api/fetchRandomRecipesData';
+import { fetchRecipeDetail } from '@/actions/api/fetchRecipesData';
 import RecipeData from '@/types/recipe';
 import RecipeDetail from '@/app/search/RecipeDetail';
 import { Modal } from './modal';
