@@ -1,5 +1,5 @@
 'use client';
-import { fetchRecipesData } from '@/actions/api/fetchRandomRecipesData';
+import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
 import {
   createContext,
   useState,
