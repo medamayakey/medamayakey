@@ -19,6 +19,7 @@ export default function RecipesItem() {
     recipesItems().then((items) => {
       setRecipeData(items.recipes);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
