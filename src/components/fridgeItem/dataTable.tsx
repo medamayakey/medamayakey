@@ -23,13 +23,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Croissant, X } from 'lucide-react';
+import { useApp } from '@/contexts/AppContext';
 
 import {
   addFridgeItems,
   deleteFridgeItems,
 } from '@/actions/db/firebase/firestore';
 
-import Item from '@/types/item';
+import { JS_VERSION } from '@clerk/nextjs/server';
 
 const CSV_URL =
   'https://spoonacular.com/application/frontend/downloads/top-1k-ingredients.csv';
@@ -45,6 +46,7 @@ export function DataTable<Item, TValue>({
 }: DataTableProps<Item, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const { fridgeItems, setFridgeItems } = useApp();
 
   const table = useReactTable({
     data,
@@ -76,10 +78,12 @@ export function DataTable<Item, TValue>({
       price: getRandomNumber(),
     };
     await addFridgeItems(newItem);
+    setFridgeItems(newItem);
   };
 
   const handleDeleteClick = async (id: string) => {
     await deleteFridgeItems(id);
+    setFridgeItems(fridgeItems.filter((fridgeItem) => fridgeItem.id != id));
   };
 
   // fetch CSV data from spoonacular Ingredients API
@@ -96,12 +100,13 @@ export function DataTable<Item, TValue>({
     name: string;
   }
 
-  const convertCSVData = (data: Array<Array<string>>): Array<ConvertedData> => {
-    return data.map((row) => ({
-      id: row[1],
-      name: row[0],
-    }));
-  };
+  // const convertCSVData = (data: Array<Array<string>>): Array<ConvertedData> => {
+  //   return data.map((row) => ({
+  //     id: row[1],
+  //     name: row[0],
+  //   }));
+  // };
+
   // fetch CSV data from spoonacular Ingredients API
   useEffect(() => {
     const fetchData = async () => {

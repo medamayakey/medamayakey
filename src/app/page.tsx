@@ -1,7 +1,7 @@
-import Image from "next/image";
-import HomeImage from "../../public/home.webp";
+import Image from 'next/image';
+import HomeImage from '../../public/home.webp';
 
-export default async function Home() {
+export default function Home() {
   return (
     <>
       <main className="container p-2">
