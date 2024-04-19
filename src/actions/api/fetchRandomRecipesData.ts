@@ -16,6 +16,39 @@ export async function fetchRecipesData() {
   }
 }
 
+export async function fetchFilteredRecipesData(){
+  try{
+// export async function fetchFilteredRecipesData(
+//   cuisine: string[],
+//   intolerance: string[],
+//   diet: string[]
+// ) {
+//   try {
+//     let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.SPOONACULAR_API_KEY}`;
+
+//     if (cuisine.length > 0) {
+//       url += `&cuisine=${cuisine.join(',')}`;
+//     }
+
+//     if (intolerance.length > 0) {
+//       url += `&intolerance=${intolerance.join(',')}`;
+//     }
+
+//     if (diet.length > 0) {
+//       url += `&diet=${diet.join(',')}`;
+//     }
+    const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.SPOONACULAR_API_KEY}&cuisine=Japanese`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+
 export async function fetchRecipeDetail(id: string) {
   try {
     const response = await fetch(
