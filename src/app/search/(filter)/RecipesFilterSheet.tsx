@@ -4,7 +4,8 @@ import { Toggle } from '@/components/ui/toggle';
 import { useState, useContext, createContext } from 'react';
 import { diets, intolerances, cuisines } from '@/types/options';
 import RecipesFilterInput from './RecipesFilterBox';
-import fetchFilteredRecipesData from '@/actions/api/fetchFilteredRecipesData';
+import { fetchFilteredRecipesData } from '@/actions/api/fetchRecipesData';
+import { useApp } from '@/contexts/AppContext';
 
 import {
   Sheet,
@@ -43,6 +44,8 @@ export default function RecipesFilterList() {
   const [selectedCuisine, setSelectedCuisine] = useState<string[]>([]);
   const [selectedIntolerance, setSelectedIntolerance] = useState<string[]>([]);
   const [selectedDiet, setSelectedDiet] = useState<string[]>([]);
+  const { fetchedRecipesData, setFetchedRecipesData } = useApp();
+
 
   // Toggle functions for each filter
   const toggleCuisine = (cuisine: string) => {
@@ -79,26 +82,18 @@ export default function RecipesFilterList() {
     setSelectedDiet([]);
   };
 
-  const handleSaveButton = () => {
-    fetchFilteredRecipesData(
+  const handleSaveButton = async () => {
+    const filteredData = await fetchFilteredRecipesData(
       replaceSpace(selectedCuisine),
       replaceSpace(selectedIntolerance),
       replaceSpace(selectedDiet)
     );
+    setFetchedRecipesData(filteredData);
+    console.log(fetchedRecipesData);
     deleteFilter();
   };
 
   return (
-    // <FilterContext.Provider
-    //   value={{
-    //     selectedCuisine,
-    //     selectedIntolerance,
-    //     selectedDiet,
-    //     toggleCuisine,
-    //     toggleIntolerance,
-    //     toggleDiet
-    //   }}
-    // >
     <>
       <Sheet>
         <RecipesFilterInput />
@@ -166,6 +161,5 @@ export default function RecipesFilterList() {
         </SheetContent>
       </Sheet>
     </>
-    // </FilterContext.Provider>
   );
 }
