@@ -89,9 +89,7 @@ export default function RecipesFilterList() {
       replaceSpace(selectedDiet)
     );
     setFetchedRecipesData(filteredData);
-    console.log("-----")
     console.log(fetchedRecipesData);
-    console.log("-----")
     deleteFilter();
   };
 

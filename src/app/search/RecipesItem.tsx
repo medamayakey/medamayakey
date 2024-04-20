@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import RecipeData from '@/types/recipe';
+import RecipeData, {FilteredRecipeData} from '@/types/recipe';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
 import { RecipesItemButton } from './RecipesItemButton';
@@ -15,8 +15,8 @@ export default function RecipesItem() {
 
   const recipesItems = useCallback(async () => {
     const items = await fetchRecipesData();
-    setFetchedRecipesData(items.recipes); // 取得したレシピデータを fetchedRecipesData に設定
-    setRecipeData(items.recipes); // レシピデータを recipeData に設定
+    setFetchedRecipesData(items.recipes); 
+    setRecipeData(items.recipes);
     console.log("fetchedRecipesData", fetchedRecipesData);
     return items;
   }, []);
@@ -27,7 +27,7 @@ export default function RecipesItem() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
-      {recipeData.map((recipe: RecipeData) => (
+      {fetchedRecipesData.map((recipe: RecipeData) => (
         <div className="rounded-md w-full bg-white shadow-md" key={recipe.id}>
           <Link href={`/search/${recipe.id}`}>
             <Image

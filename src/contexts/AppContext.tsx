@@ -8,19 +8,22 @@ import React, {
 } from 'react';
 
 import Item from '@/types/item';
+import RecipeData from '@/types/recipe';
 
 interface AppContextType {
   fridgeItems: Item[];
   setFridgeItems: Dispatch<SetStateAction<Item[]>>;
-  fetchedRecipesData: string[];
-  setFetchedRecipesData: Dispatch<SetStateAction<string[]>>;
+  fetchedRecipesData: RecipeData[];
+  setFetchedRecipesData: Dispatch<SetStateAction<RecipeData[]>>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [fridgeItems, setFridgeItems] = useState<Item[]>([]);
-  const [fetchedRecipesData, setFetchedRecipesData] = useState<string[]>([]); 
+  const [fetchedRecipesData, setFetchedRecipesData] = useState<RecipeData[]>([]);
+  
+  
 
   return (
     <AppContext.Provider value={{ fridgeItems, setFridgeItems, fetchedRecipesData, setFetchedRecipesData }}>
