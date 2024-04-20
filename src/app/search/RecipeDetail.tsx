@@ -1,30 +1,32 @@
 "use client";
 import Image from "next/image";
-import { RecipeDetails } from "@/contexts/recipeContext";
+import { RecipesItemButton } from "./RecipesItemButton";
+import RecipeData from "@/types/recipe";
+import Loading from "@/components/Loading";
 
 interface RecipeDetailProps {
-  recipeDetail: RecipeDetails;
+  recipeDetail: RecipeData | undefined;
 }
 
 export default function RecipeDetail({ recipeDetail }: RecipeDetailProps) {
   if (!recipeDetail) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
+
   return (
     <>
-      <main className="p-9">
-        <div className="flex justify-center">
-          <div className="relative gap-4">
-            <Image src={recipeDetail.image} alt={recipeDetail.title} width={480} height={100} className="rounded-md" />
-            <div className="p-4">
-              <h2 className="text-2xl">{recipeDetail.title}</h2>
-              <p> {recipeDetail.readyInMinutes}</p>
-              <p>{recipeDetail.summary}</p>
-              <p>{recipeDetail.instructions}</p>
-            </div>
+      <h1 className="text-2xl mb-8">{recipeDetail.title}</h1>
+      <div className="lg:flex justify-between">
+        <div className="mb-4">
+          <Image src={recipeDetail.image} alt={recipeDetail.title} width={480} height={100} className="rounded-md" />
+        </div>
+        <div className="lg:px-6 flex-1">
+          <p className="text-sm" dangerouslySetInnerHTML={{ __html: recipeDetail.summary }}></p>
+          <div className="w-24 mt-6">
+            <RecipesItemButton recipe={recipeDetail} />
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

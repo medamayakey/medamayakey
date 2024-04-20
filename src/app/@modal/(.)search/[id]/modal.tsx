@@ -1,10 +1,11 @@
 "use client";
 
-import { type ElementRef, ReactNode, useEffect, useRef } from "react";
+import { type ElementRef, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 
-export function Modal({ children }: { children: ReactNode }) {
+export function Modal({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const dialogRef = useRef<ElementRef<"dialog">>(null);
 
@@ -19,10 +20,12 @@ export function Modal({ children }: { children: ReactNode }) {
   }
 
   return createPortal(
-    <div className="modal-backdrop">
-      <dialog ref={dialogRef} className="modal" onClose={onDismiss}>
+    <div className="absolute bg-black flex z-50 shadow-lg">
+      <dialog ref={dialogRef} className="relative rounded-md w-8/12 p-9" onClose={onDismiss}>
         {children}
-        <button onClick={onDismiss} className="close-button" />
+        <div className="absolute top-3 right-3 cursor-pointer">
+          <X onClick={onDismiss} />
+        </div>
       </dialog>
     </div>,
     document.getElementById("modal-root")!

@@ -1,13 +1,12 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import RecipeData, {FilteredRecipeData} from '@/types/recipe';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
-import { RecipesItemButton } from './RecipesItemButton';
-import { Button } from '@/components/ui/button';
-import { useApp } from '@/contexts/AppContext';
-
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import RecipeData, { FilteredRecipeData } from "@/types/recipe";
+import { useCallback, useEffect, useState } from "react";
+import { fetchRecipesData } from "@/actions/api/fetchRecipesData";
+import { RecipesItemButton } from "./RecipesItemButton";
+import { Button } from "@/components/ui/button";
+import { useApp } from "@/contexts/AppContext";
 
 export default function RecipesItem() {
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
@@ -15,7 +14,7 @@ export default function RecipesItem() {
 
   const recipesItems = useCallback(async () => {
     const items = await fetchRecipesData();
-    setFetchedRecipesData(items.recipes); 
+    setFetchedRecipesData(items.recipes);
     setRecipeData(items.recipes);
     console.log("fetchedRecipesData", fetchedRecipesData);
     return items;
@@ -23,20 +22,14 @@ export default function RecipesItem() {
 
   useEffect(() => {
     recipesItems();
-    }, []);
+  }, []);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {fetchedRecipesData.map((recipe: RecipeData) => (
         <div className="rounded-md w-full bg-white shadow-md" key={recipe.id}>
           <Link href={`/search/${recipe.id}`}>
-            <Image
-              src={recipe.image}
-              alt={recipe.title}
-              width={640}
-              height={100}
-              className="rounded-t-md"
-            />
+            <Image src={recipe.image} alt={recipe.title} width={640} height={100} className="rounded-t-md" />
           </Link>
 
           <div className="p-4">

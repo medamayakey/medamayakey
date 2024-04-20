@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { fetchRecipeDetail } from "@/actions/api/fetchRecipesData";
 import RecipeData from "@/types/recipe";
 import RecipeDetail from "@/app/search/RecipeDetail";
-import { Fish } from "lucide-react";
+import { Cookie, Fish } from "lucide-react";
+import { Modal } from "./modal";
 import Loading from "@/components/Loading";
 
 interface RecipeDetailPageProps {
@@ -12,7 +13,7 @@ interface RecipeDetailPageProps {
   };
 }
 
-export default function RecipeDetailPage({ params }: RecipeDetailPageProps) {
+export default function RecipeDetailModal({ params }: RecipeDetailPageProps) {
   const [recipeDetail, setRecipeDetail] = useState<RecipeData>();
 
   useEffect(() => {
@@ -34,19 +35,17 @@ export default function RecipeDetailPage({ params }: RecipeDetailPageProps) {
   const ingredientNames = recipeDetail.extendedIngredients.map((ingredient) => ingredient.name);
 
   return (
-    <>
-      <div className="p-9">
-        <RecipeDetail recipeDetail={recipeDetail} />
-        <h2 className="mb-2 flex items-center">
-          <Fish />
-          <p className="ml-2">Ingredients</p>
-        </h2>
-        {ingredientNames.map((name: string, index: number) => (
-          <span className="text-sm pr-2" key={index}>
-            {name},
-          </span>
-        ))}
-      </div>
-    </>
+    <Modal>
+      <RecipeDetail recipeDetail={recipeDetail} />
+      <h2 className="mb-2 flex items-center">
+        <Fish />
+        <p className="ml-2">Ingredients</p>
+      </h2>
+      {ingredientNames.map((name: string, index: number) => (
+        <span className="text-sm pr-2" key={index}>
+          {name},
+        </span>
+      ))}
+    </Modal>
   );
 }
