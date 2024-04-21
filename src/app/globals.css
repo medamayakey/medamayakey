@@ -87,3 +87,7 @@
   height: 20px;
   stroke-width: 1.5;
 }
+
+.home-h {
+  height: calc(100vh - 64px);
+}
