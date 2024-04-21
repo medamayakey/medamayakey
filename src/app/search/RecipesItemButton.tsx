@@ -1,12 +1,17 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { addRecipe } from '@/actions/db/firebase/firestore';
-import RecipeData from '@/types/recipe';
+import { addRecipe, addShoppingItem } from '@/actions/db/firebase/firestore';
+import RecipeData, { Ingredient } from '@/types/recipe';
+import { useApp } from '@/contexts/AppContext';
+import Item from '@/types/item';
+import generateItemPrice from '@/actions/generateItemPrice';
 
 interface RecipesItemButtonProps {
   recipe: RecipeData;
 }
 export function RecipesItemButton({ recipe }: RecipesItemButtonProps) {
+  const { setCartItems, fridgeItems } = useApp();
+
   const handleClick = async () => {
     const addedRecipe = {
       id: recipe.id,
@@ -15,8 +20,27 @@ export function RecipesItemButton({ recipe }: RecipesItemButtonProps) {
       summary: recipe.summary,
       ingredients: recipe.extendedIngredients,
     };
+    const ingredients = addedRecipe.ingredients;
+    const uniqueItems: Ingredient[] = compareItems(ingredients, fridgeItems);
     addRecipe(addedRecipe);
+
+    const itemsToAdd: Item[] = uniqueItems.map((ingredient) => ({
+      // id: ingredient.id,
+      name: ingredient.name,
+      price: generateItemPrice(),
+      quantity: 1,
+    }));
+
+    setCartItems((prevItems) => [...prevItems, ...itemsToAdd]);
+    addShoppingItem(itemsToAdd);
   };
+
+  function compareItems(ingredients: Ingredient[], list: Item[]) {
+    return ingredients.filter(
+      (ingredient) =>
+        !list.some((fridgeItem) => fridgeItem.name === ingredient.name)
+    );
+  }
 
   return (
     <Button className="w-full" size="sm" onClick={handleClick}>

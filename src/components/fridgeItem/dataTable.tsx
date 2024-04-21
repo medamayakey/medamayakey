@@ -28,8 +28,9 @@ import { useApp } from '@/contexts/AppContext';
 import {
   addFridgeItems,
   deleteFridgeItems,
+  deleteShoppingItem,
 } from '@/actions/db/firebase/firestore';
-
+import generateItemPrice from '@/actions/generateItemPrice';
 import { JS_VERSION } from '@clerk/nextjs/server';
 
 const CSV_URL =
@@ -46,7 +47,7 @@ export function DataTable<Item, TValue>({
 }: DataTableProps<Item, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const { fridgeItems, setFridgeItems } = useApp();
+  const { fridgeItems, setFridgeItems, cartItems, setCartItems } = useApp();
 
   const table = useReactTable({
     data,
@@ -63,22 +64,49 @@ export function DataTable<Item, TValue>({
     },
   });
 
-  const getRandomNumber = () => {
-    const min = 1;
-    const max = 10;
-    const decimal = 100;
-    return Math.ceil((Math.random() * (max - min) + min) * decimal) / decimal;
-  };
-
   const handleAddClick = async () => {
-    const inputValue = table.getColumn('name')?.getFilterValue() as string;
     const newItem = {
-      name: inputValue,
+      name: searchItem,
       quantity: 1,
-      price: getRandomNumber(),
+      price: generateItemPrice(),
     };
+
+    const existingCartItem = cartItems.find(
+      (item) => item.name === newItem.name
+    );
+    if (existingCartItem) {
+      await deleteShoppingItem(existingCartItem.id as string);
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.id !== existingCartItem.id)
+      );
+    }
+
     await addFridgeItems(newItem);
-    setFridgeItems(newItem);
+    setFridgeItems((prevItems) => [...prevItems, newItem]);
+
+    // const existingFridgeItem = fridgeItems.find(
+    //   (item) => item.name === newItem.name
+    // );
+
+    // if (existingFridgeItem) {
+    //   console.log('existingFridgeItem', existingFridgeItem);
+
+    //   setFridgeItems((prev) => {
+    //     console.log('prev', prev);
+
+    //     return prev.map((item) => {
+    //       console.log('item', item);
+
+    //       item.name === existingFridgeItem.name
+    //         ? {
+    //             ...item,
+    //             quantity: item.quantity + 1,
+    //           }
+    //         : item;
+    //     });
+    //   });
+    //   return;
+    // }
   };
 
   const handleDeleteClick = async (id: string) => {
@@ -89,7 +117,9 @@ export function DataTable<Item, TValue>({
   // fetch CSV data from spoonacular Ingredients API
   const [inputData, setInputData] = useState([]);
   // search item state
-  const [searchItem, setSearchItem] = useState('');
+  const [searchItem, setSearchItem] = useState(
+    (table.getColumn('name')?.getFilterValue() as string) ?? ''
+  );
   // filtered data state
   const [filteredData, setFilteredData] = useState([]);
 
@@ -142,7 +172,7 @@ export function DataTable<Item, TValue>({
       <div className="py-4">
         <Input
           placeholder="Search item..."
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          value={searchItem}
           onChange={handleChange}
           list="ingredients"
           type="text"
@@ -159,57 +189,69 @@ export function DataTable<Item, TValue>({
         Add item
       </Button>
 
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="flex justify-between"
-                    id={cell.row.original.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    <button
-                      onClick={() => handleDeleteClick(cell.row.original.id)}
-                    >
-                      <X />
-                    </button>
-                  </TableCell>
-                ))}
+      {data && data.length > 0 ? (
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-18 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="flex justify-between"
+                      id={cell.row.original.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                      <button
+                        onClick={() => handleDeleteClick(cell.row.original.id)}
+                      >
+                        <X />
+                      </button>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-18 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      ) : (
+        <div className="h-screen text-center">
+          <p>My fridge is empty.</p>
+        </div>
+      )}
     </>
   );
 }

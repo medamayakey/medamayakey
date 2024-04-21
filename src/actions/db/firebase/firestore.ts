@@ -7,6 +7,7 @@ import {
   deleteDoc,
   doc,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseConfig';
 import Item from '@/types/item';
@@ -14,14 +15,13 @@ import NewRrcipeData from '@/types/newRrcipeData';
 
 const collectionFridgeItemsRef = collection(db, 'fridge_items');
 const collectionRecipesRef = collection(db, 'recipes');
+const collectionShoppingListRef = collection(db, 'shopping list');
 
 export const getRecipes = async () => {
   try {
     const querySnapshot = await getDocs(collectionRecipesRef);
     const fetchedData = querySnapshot.docs.map((item) => {
-      const data = item.data() as Item;
-      // console.log('data in firesttore file', data);
-
+      const data = item.data() as NewRrcipeData;
       return { id: item.id, ...data };
     });
 
@@ -37,8 +37,8 @@ export const addRecipe = async (addedRecipe: NewRrcipeData) => {
     //   (error) => console.error(error)
     // );
     // console.log('addRecipe result:', result);
-    const id = addedRecipe.id.toString();
 
+    const id = addedRecipe.id.toString();
     await setDoc(doc(db, 'recipes', id), {
       title: addedRecipe.title,
       image: addedRecipe.image,
@@ -78,10 +78,22 @@ export const getFridgeItems = async () => {
 
 export const addFridgeItems = async (newFridgeItem: Item) => {
   try {
+    // const fridgeItems = await getDocs(collectionFridgeItemsRef);
+    // const existingItem = fridgeItems.docs.find(
+    //   (fridgeItem) => fridgeItem.data().name === newFridgeItem.name
+    // );
+    // if (existingItem) {
+    //   const id = existingItem.id.toString();
+    //   const fridgeItemsRef = doc(db, 'fridge_items', id);
+    //   await updateDoc(fridgeItemsRef, {
+    //     quantity: existingItem.data().quantity + 1,
+    //   });
+    //   return;
+    // }
+
     const result = await addDoc(collectionFridgeItemsRef, newFridgeItem).catch(
       (error) => console.error(error)
     );
-    // console.log("result:", result);
   } catch (error) {
     console.error('Error adding fridge items:', error);
   }
@@ -93,5 +105,48 @@ export const deleteFridgeItems = async (documentId: string) => {
     await deleteDoc(docToUpdate);
   } catch (error) {
     console.error('Error deleting fridge items:', error);
+  }
+};
+
+export const getShoppingListItems = async () => {
+  try {
+    const querySnapshot = await getDocs(collectionShoppingListRef);
+    const fetchedData = querySnapshot.docs.map((item) => {
+      // item.id = id of each document
+      // console.log('id', item.id);
+
+      const data = item.data() as Item;
+      return { id: item.id, ...data };
+    });
+
+    return fetchedData;
+  } catch (error) {
+    console.error('Error getting fridge items:', error);
+  }
+};
+
+export const addShoppingItem = async (cartItems: Item[]) => {
+  try {
+    cartItems.forEach(async (item) => {
+      // const id = item.id?.toString();
+      // await setDoc(doc(db, 'shopping list', id), item);
+      // const docRef = doc(collectionShoppingListRef, id);
+      const result = await addDoc(collectionShoppingListRef, item).catch(
+        (error) => console.error(error)
+      );
+    });
+  } catch (error) {
+    console.error('Error adding recipe:', error);
+  }
+};
+
+export const deleteShoppingItem = async (documentId: string) => {
+  try {
+    const docToUpdate = doc(collectionShoppingListRef, documentId);
+    console.log(docToUpdate);
+
+    await deleteDoc(docToUpdate);
+  } catch (error) {
+    console.error('Error deleting recipe:', error);
   }
 };

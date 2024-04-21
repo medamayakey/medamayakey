@@ -11,7 +11,6 @@ export default function Sidebar() {
   const fetchFridgeItems = useCallback(async () => {
     try {
       const items = await getFridgeItems();
-      console.log(items);
 
       setFridgeItems(items);
     } catch (error) {
@@ -26,13 +25,7 @@ export default function Sidebar() {
   return (
     <aside className="min-w-72 bg-slate-50 p-6">
       <div>
-        {fridgeItems && fridgeItems.length > 0 ? (
-          <DataTable columns={columns} data={fridgeItems} />
-        ) : (
-          <div className="h-screen text-center">
-            <p>My fridge is empty.</p>
-          </div>
-        )}
+        <DataTable columns={columns} data={fridgeItems} />
       </div>
     </aside>
   );

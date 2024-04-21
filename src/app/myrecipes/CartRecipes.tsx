@@ -7,19 +7,26 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useEffect, useState } from 'react';
-import { getRecipes, deleteRecipe } from '@/actions/db/firebase/firestore';
-import NewRrcipeData from '@/types/newRrcipeData';
+import { useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 
+import {
+  getRecipes,
+  deleteRecipe,
+  getShoppingListItems,
+  deleteShoppingItem,
+} from '@/actions/db/firebase/firestore';
+import NewRrcipeData from '@/types/newRrcipeData';
+import { useApp } from '@/contexts/AppContext';
+
 export default function CartRecipes() {
-  const [recipes, setRecipes] = useState([]);
+  const { addedRecipes, setAddedRecipes, setCartItems } = useApp();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getRecipes();
-        setRecipes(data);
+        if (data) setAddedRecipes(data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
@@ -28,10 +35,29 @@ export default function CartRecipes() {
     fetchData();
   }, []);
 
-  const handleDeleteRecipe = async (id) => {
+  const handleDeleteRecipe = async (id: string, recipe: NewRrcipeData) => {
     try {
       await deleteRecipe(id);
-      setRecipes(recipes.filter((recipe) => recipe.id !== id));
+      setAddedRecipes(
+        addedRecipes.filter((addedRecipe) => addedRecipe.id !== id)
+      );
+
+      const ingredients = recipe.ingredients;
+      const shoppingItems = await getShoppingListItems();
+      if (shoppingItems) {
+        ingredients.forEach(async (ingredient) => {
+          const itemToDelete = shoppingItems.find(
+            (item) => item.name === ingredient.name
+          );
+
+          if (itemToDelete) {
+            await deleteShoppingItem(itemToDelete.id);
+            setCartItems((prevItems) =>
+              prevItems.filter((item) => item.id !== itemToDelete.id)
+            );
+          }
+        });
+      }
     } catch (error) {
       console.error('Error deleting recipe:', error);
     }
@@ -39,9 +65,9 @@ export default function CartRecipes() {
 
   return (
     <>
-      {recipes && recipes.length > 0 ? (
+      {addedRecipes && addedRecipes.length > 0 ? (
         <Accordion type="single" collapsible>
-          {recipes.map((recipe: NewRrcipeData) => (
+          {addedRecipes.map((recipe: NewRrcipeData) => (
             <AccordionItem value={recipe.id} key={recipe.id} id={recipe.id}>
               <AccordionTrigger>
                 <div className="flex items-center justify-between w-full gap-4">
@@ -57,7 +83,7 @@ export default function CartRecipes() {
                   <h2 className="flex-1 text-left">{recipe.title}</h2>
                   <button
                     className="absolute z-50 left-2"
-                    onClick={() => handleDeleteRecipe(recipe.id)}
+                    onClick={() => handleDeleteRecipe(recipe.id, recipe)}
                   >
                     <Trash2 className="h-4 w-4 stroke-red-600 shrink-0 transition-transform duration-200" />
                   </button>

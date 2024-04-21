@@ -1,22 +1,33 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import RecipeData, { FilteredRecipeData } from "@/types/recipe";
-import { useCallback, useEffect, useState } from "react";
-import { fetchRecipesData } from "@/actions/api/fetchRecipesData";
-import { RecipesItemButton } from "./RecipesItemButton";
-import { Button } from "@/components/ui/button";
-import { useApp } from "@/contexts/AppContext";
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import RecipeData, { FilteredRecipeData } from '@/types/recipe';
+import { useCallback, useEffect, useState } from 'react';
+import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
+import { RecipesItemButton } from './RecipesItemButton';
+import { Button } from '@/components/ui/button';
+import { useApp } from '@/contexts/AppContext';
+import { getRecipes } from '@/actions/db/firebase/firestore';
 
 export default function RecipesItem() {
+  // unused state
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
-  const { fetchedRecipesData, setFetchedRecipesData } = useApp();
+  const {
+    fetchedRecipesData,
+    setFetchedRecipesData,
+    addedRecipes,
+    setAddedRecipes,
+  } = useApp();
 
   const recipesItems = useCallback(async () => {
     const items = await fetchRecipesData();
+    const cartRecipeData = await getRecipes();
+
     setFetchedRecipesData(items.recipes);
     setRecipeData(items.recipes);
-    console.log("fetchedRecipesData", fetchedRecipesData);
+    if (cartRecipeData) {
+      setAddedRecipes(cartRecipeData);
+    }
     return items;
   }, []);
 
@@ -24,12 +35,20 @@ export default function RecipesItem() {
     recipesItems();
   }, []);
 
+  // console.log('addedRecipes', addedRecipes);
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {fetchedRecipesData.map((recipe: RecipeData) => (
         <div className="rounded-md w-full bg-white shadow-md" key={recipe.id}>
           <Link href={`/search/${recipe.id}`}>
-            <Image src={recipe.image} alt={recipe.title} width={640} height={100} className="rounded-t-md" />
+            <Image
+              src={recipe.image}
+              alt={recipe.title}
+              width={640}
+              height={100}
+              className="rounded-t-md"
+            />
           </Link>
 
           <div className="p-4">
