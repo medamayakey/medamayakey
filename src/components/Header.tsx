@@ -1,9 +1,9 @@
-import { SignInButton, SignedOut, UserButton, SignedIn } from '@clerk/nextjs';
-import Link from 'next/link';
-import Image from 'next/image';
-import Logo from '../../public/logo.svg';
-import { Button } from './ui/button';
-import { LogOut, NotebookPen, Search, SmilePlus } from 'lucide-react';
+import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
+import Link from "next/link";
+import Image from "next/image";
+import Logo from "../../public/logo.svg";
+import { Button } from "./ui/button";
+import { LogIn, LogOut, NotebookPen, Search, SmilePlus } from "lucide-react";
 
 export default function Header() {
   return (
@@ -45,13 +45,18 @@ export default function Header() {
             <SignedOut>
               <li>
                 <SignInButton redirectUrl="/" mode="modal">
-                  <Button variant="outline">Sign In</Button>
+                  <Button className="flex items-center ">
+                    <LogIn className="mr-2" />
+                    Sign In
+                  </Button>
                 </SignInButton>
               </li>
             </SignedOut>
-            <li className="ml-16">
-              <UserButton afterSignOutUrl="/" />
-            </li>
+            <SignedIn>
+              <li>
+                <UserButton afterSignOutUrl="/" />
+              </li>
+            </SignedIn>
           </ul>
         </nav>
       </div>
