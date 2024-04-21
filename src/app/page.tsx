@@ -25,18 +25,18 @@ export default function Home() {
                     <p className="text-xl">Kai</p>
                   </li>
                   <li className="flex items-center mb-6">
+                    <Avatar className="mr-4 border">
+                      <AvatarImage src="/rina.png" alt="Rina" />
+                      <AvatarFallback>R</AvatarFallback>
+                    </Avatar>
+                    <p className="text-xl">Rina</p>
+                  </li>
+                  <li className="flex items-center mb-6">
                     <Avatar className="mr-4">
                       <AvatarImage src="/yuki.png" alt="Yuki" />
                       <AvatarFallback>Y</AvatarFallback>
                     </Avatar>
                     <p className="text-xl">Yuki</p>
-                  </li>
-                  <li className="flex items-center mb-6">
-                    <Avatar className="mr-4">
-                      <AvatarImage src="/rina.png" alt="Rina" />
-                      <AvatarFallback>R</AvatarFallback>
-                    </Avatar>
-                    <p className="text-xl">Rina</p>
                   </li>
                 </ul>
               </div>
