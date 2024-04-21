@@ -10,7 +10,7 @@ import { useApp } from '@/contexts/AppContext';
 import { getRecipes } from '@/actions/db/firebase/firestore';
 
 export default function RecipesItem() {
-  // unused state
+
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
   const {
     fetchedRecipesData,
@@ -24,6 +24,7 @@ export default function RecipesItem() {
     const cartRecipeData = await getRecipes();
 
     setFetchedRecipesData(items.recipes);
+
     setRecipeData(items.recipes);
     if (cartRecipeData) {
       setAddedRecipes(cartRecipeData);
@@ -35,7 +36,6 @@ export default function RecipesItem() {
     recipesItems();
   }, []);
 
-  // console.log('addedRecipes', addedRecipes);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
