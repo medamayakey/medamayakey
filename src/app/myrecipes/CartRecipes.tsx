@@ -1,13 +1,13 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 
 import {

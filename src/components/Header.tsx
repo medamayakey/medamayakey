@@ -1,11 +1,15 @@
-import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "../../public/logo.svg";
-import { Button } from "./ui/button";
-import { LogIn, LogOut, NotebookPen, Search, SmilePlus } from "lucide-react";
+'use client';
+import { SignInButton, SignedOut, UserButton, SignedIn } from '@clerk/nextjs';
+import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '../../public/logo.svg';
+import { Button } from './ui/button';
+import { LogIn, NotebookPen, Search, SmilePlus } from 'lucide-react';
+import { useApp } from '@/contexts/AppContext';
 
 export default function Header() {
+  const { addedRecipes } = useApp();
+
   return (
     <header className="flex bg-slate-50 h-16 px-6">
       <div className="flex w-full justify-between items-center">
@@ -39,6 +43,11 @@ export default function Header() {
                     <NotebookPen />
                   </span>
                   <span>My Recipes</span>
+                  {addedRecipes.length > 0 && (
+                    <span className="bg-orange-500 text-white rounded-full px-2 ml-1">
+                      {addedRecipes.length}
+                    </span>
+                  )}
                 </Link>
               </li>
             </SignedIn>

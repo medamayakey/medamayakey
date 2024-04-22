@@ -10,19 +10,20 @@ interface RecipesItemButtonProps {
   recipe: RecipeData;
 }
 export function RecipesItemButton({ recipe }: RecipesItemButtonProps) {
-  const { setCartItems, fridgeItems } = useApp();
+  const { setCartItems, fridgeItems, setAddedRecipes } = useApp();
 
   const handleClick = async () => {
-    const addedRecipe = {
+    const recipeToAdd = {
       id: recipe.id,
       title: recipe.title,
       image: recipe.image,
       summary: recipe.summary,
       ingredients: recipe.extendedIngredients,
     };
-    const ingredients = addedRecipe.ingredients;
+    const ingredients = recipeToAdd.ingredients;
     const uniqueItems: Ingredient[] = compareItems(ingredients, fridgeItems);
-    addRecipe(addedRecipe);
+    addRecipe(recipeToAdd);
+    setAddedRecipes((prevRecipes) => [...prevRecipes, recipeToAdd]);
 
     const itemsToAdd: Item[] = uniqueItems.map((ingredient) => ({
       // id: ingredient.id,
