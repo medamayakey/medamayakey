@@ -1,23 +1,18 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import RecipeData, { FilteredRecipeData } from '@/types/recipe';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchRecipesData } from '@/actions/api/fetchRecipesData';
-import { RecipesItemButton } from './RecipesItemButton';
-import { Button } from '@/components/ui/button';
-import { useApp } from '@/contexts/AppContext';
-import { getRecipes } from '@/actions/db/firebase/firestore';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import RecipeData, { FilteredRecipeData } from "@/types/recipe";
+import { useCallback, useEffect, useState } from "react";
+import { fetchRecipesData } from "@/actions/api/fetchRecipesData";
+import { RecipesItemButton } from "./RecipesItemButton";
+import { Button } from "@/components/ui/button";
+import { useApp } from "@/contexts/AppContext";
+import { getRecipes } from "@/actions/db/firebase/firestore";
+import { SignedIn } from "@clerk/nextjs";
 
 export default function RecipesItem() {
-
   const [recipeData, setRecipeData] = useState<RecipeData[]>([]);
-  const {
-    fetchedRecipesData,
-    setFetchedRecipesData,
-    addedRecipes,
-    setAddedRecipes,
-  } = useApp();
+  const { fetchedRecipesData, setFetchedRecipesData, addedRecipes, setAddedRecipes } = useApp();
 
   const recipesItems = useCallback(async () => {
     const items = await fetchRecipesData();
@@ -36,19 +31,12 @@ export default function RecipesItem() {
     recipesItems();
   }, []);
 
-
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {fetchedRecipesData.map((recipe: RecipeData) => (
         <div className="rounded-md w-full bg-white shadow-md" key={recipe.id}>
           <Link href={`/search/${recipe.id}`}>
-            <Image
-              src={recipe.image}
-              alt={recipe.title}
-              width={640}
-              height={100}
-              className="rounded-t-md"
-            />
+            <Image src={recipe.image} alt={recipe.title} width={640} height={100} className="rounded-t-md" />
           </Link>
 
           <div className="p-4">
@@ -57,7 +45,9 @@ export default function RecipesItem() {
               <Button asChild className="w-full" size="sm" variant="outline">
                 <Link href={`/search/${recipe.id}`}>More</Link>
               </Button>
-              <RecipesItemButton recipe={recipe} />
+              <SignedIn>
+                <RecipesItemButton recipe={recipe} />
+              </SignedIn>
             </div>
           </div>
         </div>

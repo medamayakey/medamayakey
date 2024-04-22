@@ -1,11 +1,11 @@
-'use client';
-import { SignInButton, SignedOut, UserButton, SignedIn } from '@clerk/nextjs';
-import Link from 'next/link';
-import Image from 'next/image';
-import Logo from '../../public/logo.svg';
-import { Button } from './ui/button';
-import { LogIn, NotebookPen, Search, SmilePlus } from 'lucide-react';
-import { useApp } from '@/contexts/AppContext';
+"use client";
+import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
+import Link from "next/link";
+import Image from "next/image";
+import Logo from "../../public/logo.svg";
+import { Button } from "./ui/button";
+import { LogIn, NotebookPen, Search, SmilePlus } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
 
 export default function Header() {
   const { addedRecipes } = useApp();
@@ -37,14 +37,14 @@ export default function Header() {
               </Link>
             </li>
             <SignedIn>
-              <li>
+              <li className="relative">
                 <Link href="/myrecipes">
                   <span className="mr-2">
                     <NotebookPen />
                   </span>
                   <span>My Recipes</span>
                   {addedRecipes.length > 0 && (
-                    <span className="bg-orange-500 text-white rounded-full px-2 ml-1">
+                    <span className="absolute -top-2 -left-2 bg-orange-500 text-xs text-white rounded-full h-5 w-5 flex items-center justify-center">
                       {addedRecipes.length}
                     </span>
                   )}
