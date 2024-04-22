@@ -73,6 +73,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  main {
+    @apply flex-1;
+  }
 }
 
 @layer components {

@@ -35,7 +35,7 @@ export default function Cartbar() {
   };
 
   return (
-    <aside className="max-w-72 border-l">
+    <aside className="max-w-72 min-w-72 border-l">
       <div className="flex items-center p-4 border-b ">
         <ShoppingCart className="mr-2" />
         <h2>Item to buy</h2>
