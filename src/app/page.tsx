@@ -12,6 +12,7 @@ export default function Home() {
 						className="object-cover w-12/12 sm:w-6/12"
 						alt="Fridgefy HomeImage"
 					/>
+
 					<div className="flex justify-center items-center w-screen p-20">
 						<div>
 							<h1 className="mb-6">
