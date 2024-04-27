@@ -1,12 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import HomeImage from '../../public/home.webp';
-import { auth } from '@clerk/nextjs/server';
 
 export default function Home() {
-  const { userId } : { userId: string | null } = auth();
-  console.log('userId',userId);
-  
 	return (
 		<>
 			<main>
@@ -25,7 +21,6 @@ export default function Home() {
 								</div>
 							</h1>
 							<div>
-                <p>{userId}</p>
 								<ul>
 									<li className='flex items-center mb-6'>
 										<Avatar className='mr-4'>
