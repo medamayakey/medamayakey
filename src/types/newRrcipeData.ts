@@ -1,17 +1,17 @@
-import { Ingredient } from './recipe';
+import type { Ingredient } from './recipe';
 
 interface NewIngredient
-  extends Omit<
-    Ingredient,
-    | 'localizedName'
-    | 'image'
-    | 'original'
-    | 'originalName'
-    | 'amount'
-    | 'unit'
-    | 'meta'
-    | 'measures'
-  > {}
+	extends Omit<
+		Ingredient,
+		| 'localizedName'
+		| 'image'
+		| 'original'
+		| 'originalName'
+		| 'amount'
+		| 'unit'
+		| 'meta'
+		| 'measures'
+	> {}
 
 // interface Ingredient {
 //   id: number;
@@ -30,9 +30,9 @@ interface NewIngredient
 // }
 
 export default interface NewRrcipeData {
-  id: string | number;
-  title: string;
-  image: string;
-  summary: string;
-  ingredients: NewIngredient[];
+	id: string;
+	title: string;
+	image: string;
+	summary: string;
+	ingredients: NewIngredient[];
 }
