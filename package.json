@@ -20,6 +20,7 @@
 		"@tanstack/react-table": "^8.16.0",
 		"@types/papaparse": "^5.3.14",
 		"axios": "^1.6.8",
+		"biome": "^0.3.3",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"firebase": "^10.11.0",
