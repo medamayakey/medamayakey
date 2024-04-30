@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"format": "npx @biomejs/biome format --write ."
+		"format": "biome format --write ./src"
 	},
 	"dependencies": {
 		"@clerk/nextjs": "^4.29.12",
