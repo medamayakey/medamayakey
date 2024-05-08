@@ -1,9 +1,9 @@
-import RecipesFilterList from "./RecipesFilterSheet";
+import RecipesFilterList from './RecipesFilterSheet';
 
 export default function RecipesFilter() {
-  return (
-    <>
-      <RecipesFilterList />
-    </>
-  );
+	return (
+		<>
+			<RecipesFilterList />
+		</>
+	);
 }
