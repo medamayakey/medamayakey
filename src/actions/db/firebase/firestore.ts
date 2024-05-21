@@ -9,17 +9,24 @@ import {
 	deleteDoc,
 	doc,
 	getDocs,
+	query,
 	setDoc,
 	updateDoc,
+	where,
 } from 'firebase/firestore';
+import { auth } from '@clerk/nextjs/server';
 
 const collectionFridgeItemsRef = collection(db, 'fridge_items');
 const collectionRecipesRef = collection(db, 'recipes');
 const collectionShoppingListRef = collection(db, 'shopping list');
 
+const { userId } = auth();
+
 export const getRecipes = async () => {
 	try {
-		const querySnapshot = await getDocs(collectionRecipesRef);
+		const querySnapshot = await getDocs(
+			query(collectionRecipesRef, where('userId', '==', userId)),
+		);
 		const fetchedData = querySnapshot.docs.map((item) => {
 			const data = item.data() as NewRrcipeData;
 
@@ -34,17 +41,13 @@ export const getRecipes = async () => {
 
 export const addRecipe = async (addedRecipe: NewRrcipeData) => {
 	try {
-		// const result = await addDoc(collectionRecipesRef, addedRecipe).catch(
-		//   (error) => console.error(error)
-		// );
-		// console.log('addRecipe result:', result);
-
 		const id = addedRecipe.id.toString();
 		await setDoc(doc(db, 'recipes', id), {
 			title: addedRecipe.title,
 			image: addedRecipe.image,
 			summary: addedRecipe.summary,
 			ingredients: addedRecipe.ingredients,
+			userId,
 		}).catch((error) => console.error(error));
 	} catch (error) {
 		console.error('Error adding recipe:', error);
@@ -62,11 +65,11 @@ export const deleteRecipe = async (documentId: string) => {
 
 export const getFridgeItems = async () => {
 	try {
-		const querySnapshot = await getDocs(collectionFridgeItemsRef);
-		const fetchedData = querySnapshot.docs.map((item) => {
-			// item.id = id of each document
-			// console.log('id', item.id);
+		const querySnapshot = await getDocs(
+			query(collectionFridgeItemsRef, where('userId', '==', userId)),
+		);
 
+		const fetchedData = querySnapshot.docs.map((item) => {
 			const data = item.data() as Item;
 			return { id: item.id, ...data };
 		});
@@ -92,9 +95,10 @@ export const addFridgeItems = async (newFridgeItem: Item) => {
 		//   return;
 		// }
 
-		const result = await addDoc(collectionFridgeItemsRef, newFridgeItem).catch(
-			(error) => console.error(error),
-		);
+		const result = await addDoc(collectionFridgeItemsRef, {
+			...newFridgeItem,
+			userId,
+		}).catch((error) => console.error(error));
 	} catch (error) {
 		console.error('Error adding fridge items:', error);
 	}
@@ -111,7 +115,9 @@ export const deleteFridgeItems = async (documentId: string) => {
 
 export const getShoppingListItems = async () => {
 	try {
-		const querySnapshot = await getDocs(collectionShoppingListRef);
+		const querySnapshot = await getDocs(
+			query(collectionShoppingListRef, where('userId', '==', userId)),
+		);
 		const fetchedData = querySnapshot.docs.map((item) => {
 			const data = item.data() as Item;
 			return { id: item.id, ...data };
@@ -126,9 +132,10 @@ export const getShoppingListItems = async () => {
 export const addShoppingItem = async (cartItems: Item[]) => {
 	try {
 		for (const item of cartItems) {
-			const result = await addDoc(collectionShoppingListRef, item).catch(
-				(error) => console.error(error),
-			);
+			const result = await addDoc(collectionShoppingListRef, {
+				...item,
+				userId,
+			}).catch((error) => console.error(error));
 		}
 	} catch (error) {
 		console.error('Error adding recipe:', error);
