@@ -14,10 +14,13 @@ export default function RecipeDetail({ recipeDetail }: RecipeDetailProps) {
 	}
 
 	return (
-		<>
-			<h1 className='text-2xl mb-8'>{recipeDetail.title}</h1>
-			<div className='lg:flex justify-between'>
-				<div className='mb-4'>
+		<div className='flex flex-col items-center'>
+			<h1 className='text-2xl mb-8 font-bold	'>{recipeDetail.title}</h1>
+			<div className='lg:flex flex-col'>
+				<div className='w-24 mb-3'>
+					<RecipesItemButton recipe={recipeDetail} />
+				</div>
+				<div className='mb-4 flex justify-center'>
 					<Image
 						src={recipeDetail.image}
 						alt={recipeDetail.title}
@@ -26,16 +29,21 @@ export default function RecipeDetail({ recipeDetail }: RecipeDetailProps) {
 						className='rounded-md'
 					/>
 				</div>
-				<div className='lg:px-6 flex-1'>
+				<div className='flex-1 mb-10'>
+					<h2 className='font-bold text-xl'>Summary</h2>
 					<p
-						className='text-sm'
+						className='leading-relaxed'
 						dangerouslySetInnerHTML={{ __html: recipeDetail.summary }}
-					></p>
-					<div className='w-24 mt-6'>
-						<RecipesItemButton recipe={recipeDetail} />
-					</div>
+					/>
+				</div>
+				<div className='flex-1'>
+					<h2 className='font-bold text-xl'>Instructions</h2>
+					<p
+						className='leading-relaxed'
+						dangerouslySetInnerHTML={{ __html: recipeDetail.instructions }}
+					/>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
