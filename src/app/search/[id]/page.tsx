@@ -37,16 +37,16 @@ export default function RecipeDetailPage({ params }: RecipeDetailPageProps) {
 
 	return (
 		<>
-			<div className='p-9'>
+			<div className='p-9 px-80'>
 				<RecipeDetail recipeDetail={recipeDetail} />
-				<h2 className='mb-2 flex items-center'>
+				<h2 className='mt-10 mb-2 flex items-center font-bold text-xl'>
 					<Fish />
 					<p className='ml-2'>Ingredients</p>
 				</h2>
 				{ingredientNames.map((ingredientName) => (
-					<span className='text-sm pr-2' key={ingredientName.id}>
-						{ingredientName.name},
-					</span>
+					<li className='pr-2 text-lg' key={ingredientName.id}>
+						{ingredientName.name}
+					</li>
 				))}
 			</div>
 		</>
