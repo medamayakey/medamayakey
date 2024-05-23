@@ -20,7 +20,7 @@ export interface Ingredient {
 	};
 }
 
-interface Step {
+export interface Step {
 	number: number;
 	step: string;
 	ingredients: Ingredient[];
@@ -31,7 +31,7 @@ interface Step {
 	};
 }
 
-interface AnalyzedInstruction {
+export interface AnalyzedInstruction {
 	name: string;
 	steps: Step[];
 }
